@@ -48,6 +48,10 @@ int main()
     shape.setOutlineThickness(10.f);
     shape.setOutlineColor(sf::Color(250, 150, 100));
     
+    
+    //CLOCK
+    sf::Clock clock;
+    
     // run the program as long as the window is open
     while (window.isOpen())
     {
@@ -60,17 +64,19 @@ int main()
                 window.close();
             
             //KEYBOARD MOVEMENTS
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-                shape.move(-10, 0);
-            }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-                shape.move(10, 0);
-            }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-                shape.move(0, -10);
-            }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-                shape.move(0, 10);
+            if(event.type == sf::Event::KeyPressed){
+                if(event.key.code == sf::Keyboard::A){
+                    shape.move(-30, 0);
+                }
+                if(event.key.code == sf::Keyboard::W){
+                    shape.move(0, -30);
+                }
+                if(event.key.code == sf::Keyboard::S){
+                    shape.move(0, 30);
+                }
+                if(event.key.code == sf::Keyboard::D){
+                    shape.move(30, 0);
+                }
             }
         }
 

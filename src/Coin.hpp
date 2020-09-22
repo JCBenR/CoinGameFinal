@@ -5,7 +5,7 @@
 //  Created by Justin Siebenhaar on 9/22/20.
 //
 
-#ifndef Coin_hpp
+//#ifndef Coin_hpp
 #define Coin_hpp
 
 #include <stdio.h>
@@ -13,6 +13,8 @@
 class Coin {
 public:
     int xLocation, yLocation, value;
+    bool isGood, isCaptured;
+    
     //time
 //    a. location in window
 //    b. point value

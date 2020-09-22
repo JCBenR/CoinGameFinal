@@ -14,5 +14,6 @@ class Character {
 public:
     int xLocation, yLocation;
     
+    
 };
 
