@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include "Character.hpp"
 #include <iostream>
 
 /*
@@ -39,19 +40,28 @@ int main()
 {
     // create the window
     sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
+    sf::Font font;
 
-    sf::CircleShape shape(50.f);
+//    if (!font.loadFromFile("ArialNarrow.ttf"))
+//    {
+//        std::cout<<"font not loaded"<<std::endl;
+//        return 1;
+//    }
+
+//    sf::CircleShape shape(50.f);
     sf::CircleShape shape2(25.f);
+    Ball shape(15,sf::Vector2f(800,600));
     
-    // set the shape color to green
-    shape.setFillColor(sf::Color(100, 250, 50));
-    shape.setOutlineThickness(10.f);
-    shape.setOutlineColor(sf::Color(250, 150, 100));
+//    // set the shape color to green
+//    shape.setFillColor(sf::Color(100, 250, 50));
+//    shape.setOutlineThickness(10.f);
+//    shape.setOutlineColor(sf::Color(250, 150, 100));
     
     
     //CLOCK
     sf::Clock clock;
     
+    float dx=0, dy=0;
     // run the program as long as the window is open
     while (window.isOpen())
     {
@@ -65,32 +75,25 @@ int main()
             
             //KEYBOARD MOVEMENTS
             if(event.type == sf::Event::KeyPressed){
-                if(event.key.code == sf::Keyboard::A){
-                    shape.move(-30, 0);
-                }
                 if(event.key.code == sf::Keyboard::W){
-                    shape.move(0, -30);
+                    shape.move(sf::Vector2f(0,-30));
                 }
                 if(event.key.code == sf::Keyboard::S){
-                    shape.move(0, 30);
+                    shape.move(sf::Vector2f(0,30));
+                }
+                if(event.key.code == sf::Keyboard::A){
+                    shape.move(sf::Vector2f(-30,0));
                 }
                 if(event.key.code == sf::Keyboard::D){
-                    shape.move(30, 0);
+                    shape.move(sf::Vector2f(30,0));
                 }
             }
         }
-
+        
         // clear the window with black color
         window.clear(sf::Color::Black);
-
-
-
-
         
-       
-
-
- window.draw(shape);
+        shape.draw(window);
 	// end the current frame
         window.display();
       

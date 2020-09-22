@@ -10,10 +10,5 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-class Character {
-public:
-    int xLocation, yLocation;
-    
-    
-};
+
 
