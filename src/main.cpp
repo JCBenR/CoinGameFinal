@@ -92,6 +92,7 @@ int main()
                 }
                 if(event.key.code == sf::Keyboard::D){
                     shape.move(sf::Vector2f(30,0));
+                    //to count score in terminal. can be removed.
                     score++;
                     std::cout<<score<<std::endl;
                 }
@@ -106,7 +107,7 @@ int main()
         sf::Text displayScore(std::to_string(score), font, 50);
         displayScore.setPosition(730, 25);
         window.draw(displayScore);
-        
+        //redraw the ball shape
         shape.draw(window);
 
 	// end the current frame
