@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Character.hpp"
 #include "Coin.hpp"
+#include "BadCoin.hpp"
 #include <iostream>
 #include <string>
 
@@ -38,6 +39,21 @@
 
  */
 
+void fillVectorBCoins(std::vector <BadCoin> vec){
+    for(int i = 0; i < 10; i++){
+    BadCoin tempCoin;
+    vec.push_back(tempCoin);
+    }
+}
+
+void fillVectorCoins(std::vector <Coin> vec){
+    for(int i = 0; i < 5; i++){
+    Coin tempCoin;
+    vec.push_back(tempCoin);
+    }
+}
+
+
 int main()
 {
     // create the window
@@ -54,11 +70,14 @@ int main()
     
 Ball character(25,sf::Vector2f(800,600));
     std::vector <Coin> vecOfCoins;
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 1; i++){
         Coin tempCoin;
         vecOfCoins.push_back(tempCoin);
     }
+    //fillVectorCoins(vecOfCoins);
+    std::vector <BadCoin> vecOfBadCoins;
 
+    
     int score = 0;
     sf::Text text("SCORE", font, 30);
     sf::Text displayScore(std::to_string(score), font, 50);
@@ -111,32 +130,59 @@ Ball character(25,sf::Vector2f(800,600));
                 }
             }
         }
+        
+        //Round 1 collision
         sf::FloatRect testBoundingBox = character.shape.getGlobalBounds();
-        sf::FloatRect coin1BoundingBox = vecOfCoins[0].shape.getGlobalBounds();
         std::vector <sf::FloatRect> vecOfBounds;
         for(int i = 0; i < vecOfCoins.size(); i++){
             sf::FloatRect tempBound = vecOfCoins[i].shape.getGlobalBounds();
             vecOfBounds.push_back(tempBound);
-            if(testBoundingBox.intersects(vecOfBounds[i])){
+            if(testBoundingBox.intersects(vecOfBounds[i])){//detects collision, adds to score and removes that Coin
                 std::cout << "Collision!" << i << std::endl;
                 vecOfCoins.erase(vecOfCoins.begin()+i);
                 score++;
+                
+            }
+        }
+        std::vector <sf::FloatRect> vecOfBCBounds;
+        for(int i = 0; i < vecOfBadCoins.size(); i++){
+            sf::FloatRect tempBound = vecOfBadCoins[i].shape.getGlobalBounds();
+            vecOfBCBounds.push_back(tempBound);
+            if(testBoundingBox.intersects(vecOfBCBounds[i])){//detects collision, adds to score and removes that Coin
+                std::cout << "Collision!" << i << std::endl;
+                vecOfBadCoins.erase(vecOfBadCoins.begin()+i);
+                score--;
+                
             }
         }
     
-//    if(testBoundingBox.intersects(coin1BoundingBox)){
-//        std::cout << "Collision!" << std::endl;
-//    }
+        if(vecOfCoins.size() == 0){ //once all coins are collected, reset timer, spawn next round's coins
+            //reset timer
+            std::cout << "Spawn new vector" << std::endl;
+            for(int i = 0; i < 1; i++){
+                Coin tempCoin;
+                vecOfCoins.push_back(tempCoin);
+            }
+            for(int i = 0; i < 2; i++){
+                BadCoin tempCoin;
+                vecOfBadCoins.push_back(tempCoin);
+            }
+        }
+        
 
         
         // clear the window with black color
         window.clear(sf::Color::Black);
-
         
         character.draw(window);
         for(Coin c : vecOfCoins){
             c.draw(window);
         }
+        
+        for(BadCoin c : vecOfBadCoins){
+            c.draw(window);
+        }
+
 
         //draws the title for score
         window.draw(text);
