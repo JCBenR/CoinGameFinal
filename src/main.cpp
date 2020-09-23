@@ -65,6 +65,9 @@ Ball character(25,sf::Vector2f(800,600));
     text.setPosition(700, 1);
     displayScore.setPosition(730, 25);
     
+    //game over text
+    sf::Text gameOver("GAME OVER", font, 60);
+    gameOver.setPosition(300, 250);
 //    // set the shape color to green
 //    shape.setFillColor(sf::Color(100, 250, 50));
 //    shape.setOutlineThickness(10.f);
@@ -73,6 +76,7 @@ Ball character(25,sf::Vector2f(800,600));
     
     //CLOCK
     sf::Clock clock;
+    sf::Time roundTime = sf::seconds(10.0);
     
     float dx=0, dy=0;
     // run the program as long as the window is open
@@ -80,13 +84,17 @@ Ball character(25,sf::Vector2f(800,600));
     {
         // check all the window's events that were triggered since the last iteration of the loop
         window.draw(displayScore);
+        window.draw(gameOver);
+        sf::Time elapsed1 = clock.getElapsedTime();
+        
+      
         sf::Event event;
         while (window.pollEvent(event))
         {
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
                 window.close();
-            
+            if (elapsed1 > roundTime) break;
             //KEYBOARD MOVEMENTS
             if(event.type == sf::Event::KeyPressed){
                 if(event.key.code == sf::Keyboard::W){
@@ -136,8 +144,26 @@ Ball character(25,sf::Vector2f(800,600));
         sf::Text displayScore(std::to_string(score), font, 50);
         displayScore.setPosition(730, 25);
         window.draw(displayScore);
-        //redraw the ball shape
-
+        
+        //CLOCK
+        
+        //calculate countdown
+        sf::Time timeLeft = roundTime - elapsed1;
+        
+        //cast time to string (necessary so it can be printed on screen)
+        std::string gameTime = std::to_string((int)(timeLeft.asSeconds()));
+        
+        
+        sf::Text gameClock(gameTime, font, 50);
+        gameClock.setPosition(450, 10);
+        window.draw(gameClock);
+        
+        
+        //check if time has run out
+        if (elapsed1 > roundTime) {
+            window.draw(gameOver);
+            clock.restart();
+        }
 	// end the current frame
         window.display();
       
