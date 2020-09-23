@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Character.hpp"
+#include "Game.hpp"
+#include "Coin.hpp"
 #include <iostream>
 
 /*
@@ -49,8 +51,14 @@ int main()
 //    }
 
 //    sf::CircleShape shape(50.f);
-    sf::CircleShape shape2(25.f);
-    Ball shape(15,sf::Vector2f(800,600));
+    //sf::CircleShape shape(25.f);
+    Ball character(25,sf::Vector2f(800,600));
+    std::vector <Coin> vecOfCoins;
+    for(int i = 0; i < 10; i++){
+        Coin tempCoin;
+        vecOfCoins.push_back(tempCoin);
+    }
+
     
 //    // set the shape color to green
 //    shape.setFillColor(sf::Color(100, 250, 50));
@@ -76,24 +84,43 @@ int main()
             //KEYBOARD MOVEMENTS
             if(event.type == sf::Event::KeyPressed){
                 if(event.key.code == sf::Keyboard::W){
-                    shape.move(sf::Vector2f(0,-30));
+                    character.move(sf::Vector2f(0,-30));
                 }
                 if(event.key.code == sf::Keyboard::S){
-                    shape.move(sf::Vector2f(0,30));
+                    character.move(sf::Vector2f(0,30));
                 }
                 if(event.key.code == sf::Keyboard::A){
-                    shape.move(sf::Vector2f(-30,0));
+                    character.move(sf::Vector2f(-30,0));
                 }
                 if(event.key.code == sf::Keyboard::D){
-                    shape.move(sf::Vector2f(30,0));
+                    character.move(sf::Vector2f(30,0));
                 }
             }
         }
+        sf::FloatRect testBoundingBox = character.shape.getGlobalBounds();
+        sf::FloatRect coin1BoundingBox = vecOfCoins[0].shape.getGlobalBounds();
+        std::vector <sf::FloatRect> vecOfBounds;
+        for(int i = 0; i < vecOfCoins.size(); i++){
+            sf::FloatRect tempBound = vecOfCoins[i].shape.getGlobalBounds();
+            vecOfBounds.push_back(tempBound);
+            if(testBoundingBox.intersects(vecOfBounds[i])){
+                std::cout << "Collision!" << i << std::endl;
+                vecOfCoins.erase(vecOfCoins.begin()+i);
+            }
+        }
+    
+//    if(testBoundingBox.intersects(coin1BoundingBox)){
+//        std::cout << "Collision!" << std::endl;
+//    }
+
         
         // clear the window with black color
         window.clear(sf::Color::Black);
         
-        shape.draw(window);
+        character.draw(window);
+        for(Coin c : vecOfCoins){
+            c.draw(window);
+        }
 	// end the current frame
         window.display();
       

@@ -13,7 +13,7 @@
 #include <SFML/Graphics.hpp>
 
 class Ball {
-private:
+public:
   sf::CircleShape shape;
   float radius;
   float xMin;
