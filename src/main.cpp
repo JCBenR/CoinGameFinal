@@ -87,10 +87,8 @@ Ball character(25,sf::Vector2f(800,600));
     //game over text
     sf::Text gameOver("GAME OVER", font, 60);
     gameOver.setPosition(300, 250);
-//    // set the shape color to green
-//    shape.setFillColor(sf::Color(100, 250, 50));
-//    shape.setOutlineThickness(10.f);
-//    shape.setOutlineColor(sf::Color(250, 150, 100));
+    sf::Text timer("TIME LEFT", font, 20);
+    
     
     
     //CLOCK
@@ -201,7 +199,8 @@ Ball character(25,sf::Vector2f(800,600));
         std::string gameTime = std::to_string((int)(timeLeft.asSeconds()));
         
         sf::Text gameClock(gameTime, font, 50);
-        gameClock.setPosition(450, 10);
+        gameClock.setPosition(400, 10);
+        timer.setPosition(370, 1);
         
         
         
@@ -211,6 +210,7 @@ Ball character(25,sf::Vector2f(800,600));
 //            sf::Text gameClock("0", font, 50);
 //            clock.restart();
         } else{
+            window.draw(timer);
             window.draw(gameClock);
         }
 	// end the current frame
