@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Character.hpp"
 #include "Coin.hpp"
+#include "Projectile.hpp"
 #include "BadCoin.hpp"
 #include <iostream>
 #include <string>
