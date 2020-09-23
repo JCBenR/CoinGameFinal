@@ -1,8 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include "Character.hpp"
-#include "Game.hpp"
 #include "Coin.hpp"
 #include <iostream>
+#include <string>
 
 /*
  1. character object
@@ -42,23 +42,28 @@ int main()
 {
     // create the window
     sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
+    // Declare a new font
     sf::Font font;
 
-//    if (!font.loadFromFile("ArialNarrow.ttf"))
-//    {
-//        std::cout<<"font not loaded"<<std::endl;
-//        return 1;
-//    }
-
-//    sf::CircleShape shape(50.f);
-    //sf::CircleShape shape(25.f);
-    Ball character(25,sf::Vector2f(800,600));
+    // Load it from a file
+    if (!font.loadFromFile("../../ArialNarrow.ttf"))
+    {
+        std::cout<<"font didn't load"<<std::endl;
+        return 1;
+    }
+    
+Ball character(25,sf::Vector2f(800,600));
     std::vector <Coin> vecOfCoins;
     for(int i = 0; i < 10; i++){
         Coin tempCoin;
         vecOfCoins.push_back(tempCoin);
     }
 
+    int score = 0;
+    sf::Text text("SCORE", font, 30);
+    sf::Text displayScore(std::to_string(score), font, 50);
+    text.setPosition(700, 1);
+    displayScore.setPosition(730, 25);
     
 //    // set the shape color to green
 //    shape.setFillColor(sf::Color(100, 250, 50));
@@ -74,6 +79,7 @@ int main()
     while (window.isOpen())
     {
         // check all the window's events that were triggered since the last iteration of the loop
+        window.draw(displayScore);
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -93,7 +99,11 @@ int main()
                     character.move(sf::Vector2f(-30,0));
                 }
                 if(event.key.code == sf::Keyboard::D){
+
                     character.move(sf::Vector2f(30,0));
+                    //to count score in terminal. can be removed.
+                    score++;
+                    std::cout<<score<<std::endl;
                 }
             }
         }
@@ -116,11 +126,21 @@ int main()
         
         // clear the window with black color
         window.clear(sf::Color::Black);
+
         
         character.draw(window);
         for(Coin c : vecOfCoins){
             c.draw(window);
         }
+
+        //draws the title for score
+        window.draw(text);
+        //called to update and display score in proper position after each loop.
+        sf::Text displayScore(std::to_string(score), font, 50);
+        displayScore.setPosition(730, 25);
+        window.draw(displayScore);
+        //redraw the ball shape
+
 	// end the current frame
         window.display();
       

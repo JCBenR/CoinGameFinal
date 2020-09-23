@@ -31,7 +31,7 @@ public:
     shape.setOrigin(radius, radius); // sets the orgin to the center of the
                                      // Circle, I like thinking about it this
                                      // way.
-
+      shape.getPosition();
     xMin = radius;
     yMin = radius;
     xMax = windowSize.x - radius;

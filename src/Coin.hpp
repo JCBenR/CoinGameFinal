@@ -5,7 +5,7 @@
 //  Created by Justin Siebenhaar on 9/22/20.
 //
 
-//#ifndef Coin_hpp
+#ifndef Coin_hpp
 #define Coin_hpp
 
 #include <stdio.h>
@@ -47,3 +47,6 @@ public:
 //    --event class
 //    --time class
 //    --color
+
+#endif /* Coin_hpp */
+
