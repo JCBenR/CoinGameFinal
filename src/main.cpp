@@ -39,22 +39,6 @@
     c. generate objects
 
  */
-
-void fillVectorBCoins(std::vector <BadCoin> vec){
-    for(int i = 0; i < 10; i++){
-    BadCoin tempCoin;
-    vec.push_back(tempCoin);
-    }
-}
-
-void fillVectorCoins(std::vector <Coin> vec){
-    for(int i = 0; i < 5; i++){
-    Coin tempCoin;
-    vec.push_back(tempCoin);
-    }
-}
-
-
 int main()
 {
     // create the window
@@ -68,8 +52,9 @@ int main()
         std::cout<<"font didn't load"<<std::endl;
         return 1;
     }
-    
-Ball character(25,sf::Vector2f(800,600));
+
+    Ball character(25,sf::Vector2f(800,600));
+    int lives = 0;
     std::vector <Coin> vecOfCoins;
     for(int i = 0; i < 1; i++){
         Coin tempCoin;
@@ -77,7 +62,9 @@ Ball character(25,sf::Vector2f(800,600));
     }
     //fillVectorCoins(vecOfCoins);
     std::vector <BadCoin> vecOfBadCoins;
+    std::vector <Projectile> proj1, proj2, proj3, proj4;
 
+    
     
     int score = 0;
     sf::Text text("SCORE", font, 30);
@@ -85,6 +72,9 @@ Ball character(25,sf::Vector2f(800,600));
     text.setPosition(700, 1);
     displayScore.setPosition(730, 25);
     
+    //game over text
+    sf::Text gameOver("GAME OVER", font, 60);
+    gameOver.setPosition(300, 250);
 //    // set the shape color to green
 //    shape.setFillColor(sf::Color(100, 250, 50));
 //    shape.setOutlineThickness(10.f);
@@ -93,6 +83,7 @@ Ball character(25,sf::Vector2f(800,600));
     
     //CLOCK
     sf::Clock clock;
+    sf::Time roundTime = sf::seconds(10.0);
     
     float dx=0, dy=0;
     // run the program as long as the window is open
@@ -100,6 +91,12 @@ Ball character(25,sf::Vector2f(800,600));
     {
         // check all the window's events that were triggered since the last iteration of the loop
         window.draw(displayScore);
+        window.draw(gameOver);
+        sf::Time elapsed1 = clock.getElapsedTime();
+        
+        if (lives == 3){
+            break;
+        }
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -107,6 +104,7 @@ Ball character(25,sf::Vector2f(800,600));
             if (event.type == sf::Event::Closed)
                 window.close();
             
+            if (elapsed1 > roundTime) break;
             //KEYBOARD MOVEMENTS
             if(event.type == sf::Event::KeyPressed){
                 if(event.key.code == sf::Keyboard::W){
@@ -124,17 +122,15 @@ Ball character(25,sf::Vector2f(800,600));
             }
         }
         
-        //Round 1 collision
+
         sf::FloatRect testBoundingBox = character.shape.getGlobalBounds();
         std::vector <sf::FloatRect> vecOfBounds;
         for(int i = 0; i < vecOfCoins.size(); i++){
             sf::FloatRect tempBound = vecOfCoins[i].shape.getGlobalBounds();
             vecOfBounds.push_back(tempBound);
             if(testBoundingBox.intersects(vecOfBounds[i])){//detects collision, adds to score and removes that Coin
-                std::cout << "Collision!" << i << std::endl;
                 vecOfCoins.erase(vecOfCoins.begin()+i);
                 score++;
-                
             }
         }
         std::vector <sf::FloatRect> vecOfBCBounds;
@@ -142,32 +138,47 @@ Ball character(25,sf::Vector2f(800,600));
             sf::FloatRect tempBound = vecOfBadCoins[i].shape.getGlobalBounds();
             vecOfBCBounds.push_back(tempBound);
             if(testBoundingBox.intersects(vecOfBCBounds[i])){//detects collision, adds to score and removes that Coin
-                std::cout << "Collision!" << i << std::endl;
                 vecOfBadCoins.erase(vecOfBadCoins.begin()+i);
                 score--;
-                
             }
         }
-    
+        
+        std::vector <sf::FloatRect> proj1Bounds;
+        for(int i = 0; i < proj1.size(); i++){
+            sf::FloatRect tempBound = proj1[i].shape.getGlobalBounds();
+            proj1Bounds.push_back(tempBound);
+            if(testBoundingBox.intersects(proj1Bounds[i])){
+                proj1.erase(proj1.begin()+i);
+                lives ++;
+            }
+        }
+        
+        
+        
+        
         if(vecOfCoins.size() == 0){ //once all coins are collected, reset timer, spawn next round's coins
-            //reset timer
-            std::cout << "Spawn new vector" << std::endl;
+            clock.restart();  //shorten time with each round, "you lose" when time == 0
             for(int i = 0; i < 1; i++){
                 Coin tempCoin;
                 vecOfCoins.push_back(tempCoin);
             }
             for(int i = 0; i < 2; i++){
+                Projectile tempProjectile;
                 BadCoin tempCoin;
                 vecOfBadCoins.push_back(tempCoin);
+                proj1.push_back(tempProjectile);
+
+                for(int i = 0; i < vecOfBadCoins.size(); i++){
+                    proj1[i].shape.setPosition(vecOfBadCoins[i].shape.getPosition());
+                }
             }
         }
-        
 
-        
         // clear the window with black color
         window.clear(sf::Color::Black);
-        
+    
         character.draw(window);
+        
         for(Coin c : vecOfCoins){
             c.draw(window);
         }
@@ -176,15 +187,44 @@ Ball character(25,sf::Vector2f(800,600));
             c.draw(window);
         }
 
+        for(Projectile p : proj1){
+            p.draw(window);
+        }
 
+        for(int p = 0; p < proj1.size(); p++){
+            proj1[p].shape.move(.005, .005);
+        }
+
+        
+        
+
+        
         //draws the title for score
         window.draw(text);
         //called to update and display score in proper position after each loop.
         sf::Text displayScore(std::to_string(score), font, 50);
         displayScore.setPosition(730, 25);
         window.draw(displayScore);
-        //redraw the ball shape
-
+        
+        //CLOCK
+        
+        //calculate countdown
+        sf::Time timeLeft = roundTime - elapsed1;
+        
+        //cast time to string (necessary so it can be printed on screen)
+        std::string gameTime = std::to_string((int)(timeLeft.asSeconds()));
+        
+        
+        sf::Text gameClock(gameTime, font, 50);
+        gameClock.setPosition(450, 10);
+        window.draw(gameClock);
+        
+        
+        //check if time has run out
+        if (elapsed1 > roundTime) {
+            window.draw(gameOver);
+            clock.restart();
+        }
 	// end the current frame
         window.display();
       

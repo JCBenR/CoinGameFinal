@@ -17,7 +17,7 @@ class Coin {
 public:
     float xLoc, yLoc;
     int value;
-    bool isGood, isCaptured;
+
     
  
 //private:
