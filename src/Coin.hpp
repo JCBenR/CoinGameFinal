@@ -5,15 +5,14 @@
 //  Created by Justin Siebenhaar on 9/22/20.
 //
 
-//#ifndef Coin_hpp
+#ifndef Coin_hpp
 #define Coin_hpp
 
 #include <stdio.h>
+#include <SFML/Graphics.hpp>
 
-class Coin {
-public:
-    int xLocation, yLocation, value;
-    bool isGood, isCaptured;
+class Coin{
+
     
     //time
 //    a. location in window
@@ -28,3 +27,5 @@ public:
 //    --color
     
 };
+
+#endif /* Coin_hpp */
