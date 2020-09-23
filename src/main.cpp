@@ -113,6 +113,7 @@ Ball character(25,sf::Vector2f(800,600));
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
                 window.close();
+            //if time runs out, character can't move anymore
             if (elapsed1 > roundTime) break;
             //KEYBOARD MOVEMENTS
             if(event.type == sf::Event::KeyPressed){
@@ -199,16 +200,18 @@ Ball character(25,sf::Vector2f(800,600));
         //cast time to string (necessary so it can be printed on screen)
         std::string gameTime = std::to_string((int)(timeLeft.asSeconds()));
         
-        
         sf::Text gameClock(gameTime, font, 50);
         gameClock.setPosition(450, 10);
-        window.draw(gameClock);
+        
         
         
         //check if time has run out
         if (elapsed1 > roundTime) {
             window.draw(gameOver);
-            clock.restart();
+//            sf::Text gameClock("0", font, 50);
+//            clock.restart();
+        } else{
+            window.draw(gameClock);
         }
 	// end the current frame
         window.display();
