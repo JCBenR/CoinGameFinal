@@ -99,11 +99,7 @@ Ball character(25,sf::Vector2f(800,600));
                     character.move(sf::Vector2f(-30,0));
                 }
                 if(event.key.code == sf::Keyboard::D){
-
                     character.move(sf::Vector2f(30,0));
-                    //to count score in terminal. can be removed.
-                    score++;
-                    std::cout<<score<<std::endl;
                 }
             }
         }
@@ -116,6 +112,7 @@ Ball character(25,sf::Vector2f(800,600));
             if(testBoundingBox.intersects(vecOfBounds[i])){
                 std::cout << "Collision!" << i << std::endl;
                 vecOfCoins.erase(vecOfCoins.begin()+i);
+                score++;
             }
         }
     
