@@ -188,19 +188,16 @@ int main()
         gameClock.setPosition(400, 10);
         timer.setPosition(370, 1);
         
- 
         //check if time has run out
         if (elapsed1 > roundTime || hitCounter> 3) {
             window.draw(gameOver);
-//            sf::Text gameClock("0", font, 50);
-//            clock.restart();
+
         } else{
             window.draw(timer);
             window.draw(gameClock);
         }
-	// end the current frame
-        window.display();
-      
+        // end the current frame
+        window.display();      
     }
 
     return 0;
