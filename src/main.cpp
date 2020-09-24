@@ -79,24 +79,37 @@ int main()
         vecOfCoins.push_back(tempCoin);
     }
     //score text
+    ///declare text for score title header, font size and font to use
     sf::Text text("SCORE", font, 30);
+    ///declare text, font and size for actual score which will change dynamically. Because sf::Text will only display strings, need to cast int of score to a string.
     sf::Text displayScore(std::to_string(score), font, 50);
+    ///set position of score header
     text.setPosition(700, 1);
+    ///set position of score
     displayScore.setPosition(730, 25);
     
     //lives counter text
+    ///declare lives counter title header
     sf::Text livesLeft("LIVES", font, 30);
+    ///declare lives counter. dynamically subtracts hits as they come.
     sf::Text displayLives(std::to_string(4 - hitCounter), font, 50);
+    ///set position of lives title
     livesLeft.setPosition(600, 1);
+    ///set position of lives counter
     displayLives.setPosition(630, 25);
     
     //game over text
+    ///@param gameOver title to display when game ends
     sf::Text gameOver("GAME OVER", font, 60);
+    ///set position of game over to center of screen
     gameOver.setPosition(300, 250);
+    ///@param timer time left header
     sf::Text timer("TIME LEFT", font, 20);
     
     //CLOCK
+    ///@param clock clock to display time remaining. this will reset to 10 whenever player collects a good coin.
     sf::Clock clock;
+    ///@param roundTime sets default time to 10 seconds
     sf::Time roundTime = sf::seconds(10.0);
     
     // run the program as long as the window is open
