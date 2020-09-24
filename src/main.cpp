@@ -10,75 +10,111 @@
 
 int main()
 {
-    // create the window
+    /// create the window
     sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
-    // Declare a new font
+    /// Declare a new font
     sf::Font font;
     // Load it from a file
     if (!font.loadFromFile("ArialNarrow.ttf"))
     {
+        ///if doesn't load correctly, print error and close
         std::cout<<"font didn't load"<<std::endl;
         return 1;
     }
     //load sound files
+    ///declare sound file
     sf::SoundBuffer bufferCollide;
+
     if (!bufferCollide.loadFromFile("collision.wav")){
+
+        ///if doesn't load correctly, print error and close
+
         std::cout << "collision sound didn't load" <<std::endl;
         return 1;
     }
     sf::Sound collision;
     collision.setBuffer(bufferCollide);
-    
+    ///declare sound file
     sf::SoundBuffer bufferCollect;
+    
+    ///load file. need to use directory outside source
     if (!bufferCollect.loadFromFile("collect.wav")){
+        ///if doesn't load correctly, print error and close
         std::cout << "collision sound didn't load" <<std::endl;
         return 1;
     }
+    ///declare sound file
     sf::Sound collect;
     collect.setBuffer(bufferCollect);
     
     //LOAD BACKGROUND
+    ///declare texture for background
     sf::Texture texture;
+
+    ///load texture from file
     if (!texture.loadFromFile("digitalMtn.jpg"))
+    ///load texture from file
     {
+        ///error out if file not found
         std::cout << "backgroun image didn't load" <<std::endl;
         return 1;
     }
     
     sf::Sprite sprite;
+    ///assign background image to sprite
     sf::Vector2u size = texture.getSize();
             sprite.setTexture(texture);
+    ///set position to fill screen
             sprite.setOrigin(size.x / 3, size.y / 3);
-    
+    ///@param hitCounter number of times person has been hit
     int hitCounter = 0;
+    ///@param score total score of collected coins - badCoins
     int score = 0;
+    ///@param vecOfCoins vector of good coins
     std::vector <Coin> vecOfCoins;
+    ///@param vecOfBadCoins vector of bad coins
     std::vector <BadCoin> vecOfBadCoins;
+    ///@param proj1 projectiles
     std::vector <Projectile> proj1;
+    ///generate character on screen
     Ball character(25,sf::Vector2f(800,600));
+    ///populate vector of coins
     for(int i = 0; i < 1; i++){ //loop + vector to easily scale at a later point
         Coin tempCoin;
         vecOfCoins.push_back(tempCoin);
     }
     //score text
+    ///declare text for score title header, font size and font to use
     sf::Text text("SCORE", font, 30);
+    ///declare text, font and size for actual score which will change dynamically. Because sf::Text will only display strings, need to cast int of score to a string.
     sf::Text displayScore(std::to_string(score), font, 50);
+    ///set position of score header
     text.setPosition(700, 1);
+    ///set position of score
     displayScore.setPosition(730, 25);
     
     //lives counter text
+    ///declare lives counter title header
     sf::Text livesLeft("LIVES", font, 30);
+    ///declare lives counter. dynamically subtracts hits as they come.
     sf::Text displayLives(std::to_string(4 - hitCounter), font, 50);
+    ///set position of lives title
     livesLeft.setPosition(600, 1);
+    ///set position of lives counter
     displayLives.setPosition(630, 25);
     
     //game over text
+    ///@param gameOver title to display when game ends
     sf::Text gameOver("GAME OVER", font, 60);
+    ///set position of game over to center of screen
     gameOver.setPosition(300, 250);
+    ///@param timer time left header
     sf::Text timer("TIME LEFT", font, 20);
     
     //CLOCK
+    ///@param clock clock to display time remaining. this will reset to 10 whenever player collects a good coin.
     sf::Clock clock;
+    ///@param roundTime sets default time to 10 seconds
     sf::Time roundTime = sf::seconds(10.0);
     
     // run the program as long as the window is open
