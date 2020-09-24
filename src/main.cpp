@@ -36,7 +36,19 @@ int main()
     }
     sf::Sound collect;
     collect.setBuffer(bufferCollect);
-
+    
+    //LOAD BACKGROUND
+    sf::Texture texture;
+    if (!texture.loadFromFile("../../digitalMtn.jpg"))
+    {
+        std::cout << "backgroun image didn't load" <<std::endl;
+        return 1;
+    }
+    
+    sf::Sprite sprite;
+    sf::Vector2u size = texture.getSize();
+            sprite.setTexture(texture);
+            sprite.setOrigin(size.x / 3, size.y / 3);
     
     int hitCounter = 0;
     int score = 0;
@@ -73,11 +85,12 @@ int main()
     while (window.isOpen())
     {
         // check all the window's events that were triggered since the last iteration of the loop
+        
         window.draw(displayScore);
         window.draw(displayLives);
         window.draw(gameOver);
         sf::Time elapsed1 = clock.getElapsedTime();
-        
+        window.draw(sprite);
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -160,7 +173,7 @@ int main()
 
         // clear the window with black color
         window.clear(sf::Color::Black);
-    
+        window.draw(sprite);
         //draw necesarry objects
         character.draw(window);
         for(Coin c : vecOfCoins){
@@ -211,6 +224,7 @@ int main()
             window.draw(gameClock);
         }
         // end the current frame
+        
         window.display();      
     }
 
