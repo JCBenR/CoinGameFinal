@@ -54,6 +54,12 @@ int main()
     text.setPosition(700, 1);
     displayScore.setPosition(730, 25);
     
+    //lives counter text
+    sf::Text livesLeft("LIVES", font, 30);
+    sf::Text displayLives(std::to_string(4 - hitCounter), font, 50);
+    livesLeft.setPosition(600, 1);
+    displayLives.setPosition(630, 25);
+    
     //game over text
     sf::Text gameOver("GAME OVER", font, 60);
     gameOver.setPosition(300, 250);
@@ -68,6 +74,7 @@ int main()
     {
         // check all the window's events that were triggered since the last iteration of the loop
         window.draw(displayScore);
+        window.draw(displayLives);
         window.draw(gameOver);
         sf::Time elapsed1 = clock.getElapsedTime();
         
@@ -175,6 +182,13 @@ int main()
         sf::Text displayScore(std::to_string(score), font, 50);
         displayScore.setPosition(730, 25);
         window.draw(displayScore);
+        
+        
+        //draws title for lives counter
+        window.draw(livesLeft);
+        sf::Text displayLives(std::to_string(4 - hitCounter), font, 50);
+        displayLives.setPosition(630, 25);
+        window.draw(livesLeft);
         
         //CLOCK
         
