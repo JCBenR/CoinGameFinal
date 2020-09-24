@@ -21,8 +21,7 @@ public:
   float yMin;
   float yMax;
 
-public:
-    Ball();
+  Ball();
   Ball(float r, sf::Vector2f windowSize) { // the size of the window ie
                                            // 1920x1080
     radius = r;

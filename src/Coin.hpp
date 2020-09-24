@@ -15,26 +15,19 @@
 
 class Coin {
 public:
-    float xLoc, yLoc;
-    int value;
-
-    
- 
-//private:
   sf::CircleShape shape;
   float radius;
-
-
-public:
     Coin(){
         radius = 10;
         shape = sf::CircleShape(radius);
         shape.setFillColor(sf::Color::Yellow);
         shape.setOrigin(radius, radius); // sets the orgin to the center
         shape.setPosition(rand() % 800, rand() % 600); //gives random position
-  }
+    }
 
-  void draw(sf::RenderWindow &window) { window.draw(shape); }
+  void draw(sf::RenderWindow &window){
+      window.draw(shape);
+  }
 };
 
 

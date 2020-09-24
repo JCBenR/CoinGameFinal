@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Character.hpp"
 #include "Coin.hpp"
-#include "Projectile.hpp"
+#include "projectile.hpp"
 #include "BadCoin.hpp"
 #include <iostream>
 #include <string>
@@ -20,18 +20,17 @@ int main()
         return 1;
     }
 
-    Ball character(25,sf::Vector2f(800,600));
-    int lives = 0;
+    int hitCounter = 0;
+    int score = 0;
     std::vector <Coin> vecOfCoins;
-    for(int i = 0; i < 1; i++){
+    std::vector <BadCoin> vecOfBadCoins;
+    std::vector <Projectile> proj1;
+    Ball character(25,sf::Vector2f(800,600));
+    for(int i = 0; i < 1; i++){ //loop + vector to easily scale at a later point
         Coin tempCoin;
         vecOfCoins.push_back(tempCoin);
     }
-    //fillVectorCoins(vecOfCoins);
-    std::vector <BadCoin> vecOfBadCoins;
-    std::vector <Projectile> proj1, proj2, proj3, proj4;
-
-    int score = 0;
+    //score text
     sf::Text text("SCORE", font, 30);
     sf::Text displayScore(std::to_string(score), font, 50);
     text.setPosition(700, 1);
@@ -46,7 +45,6 @@ int main()
     sf::Clock clock;
     sf::Time roundTime = sf::seconds(10.0);
     
-    float dx=0, dy=0;
     // run the program as long as the window is open
     while (window.isOpen())
     {
@@ -62,9 +60,8 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
-            //if time runs out, character can't move anymore
-            if (elapsed1 > roundTime) break;
-            if (lives > 3) break;
+            //if time runs out or hitCounter goes above 3, character can't move anymore
+            if (elapsed1 > roundTime || hitCounter > 3) break;
             //KEYBOARD MOVEMENTS
             if(event.type == sf::Event::KeyPressed){
                 if(event.key.code == sf::Keyboard::W){
@@ -82,6 +79,7 @@ int main()
             }
         }
         
+        //establish bounding boxes for each element
         sf::FloatRect testBoundingBox = character.shape.getGlobalBounds();
         std::vector <sf::FloatRect> vecOfBounds;
         for(int i = 0; i < vecOfCoins.size(); i++){
@@ -92,6 +90,7 @@ int main()
                 score++;
             }
         }
+        
         std::vector <sf::FloatRect> vecOfBCBounds;
         for(int i = 0; i < vecOfBadCoins.size(); i++){
             sf::FloatRect tempBound = vecOfBadCoins[i].shape.getGlobalBounds();
@@ -108,24 +107,25 @@ int main()
             proj1Bounds.push_back(tempBound);
             if(testBoundingBox.intersects(proj1Bounds[i])){
                 proj1.erase(proj1.begin()+i);
-                lives ++;
+                hitCounter ++;
             }
         }
         
+        
         if(vecOfCoins.size() == 0){ //once all coins are collected, reset timer, spawn next round's coins
-            clock.restart();  //shorten time with each round, "you lose" when time == 0
-            for(int i = 0; i < 1; i++){
+            clock.restart();  //
+            for(int i = 0; i < 1; i++){ //loop + vector to easily scale at a later point
                 Coin tempCoin;
                 vecOfCoins.push_back(tempCoin);
             }
 
-            for(int i = 0; i < 2; i++){
+            for(int i = 0; i < 2; i++){ //loop +  vector to easily scale at a later point
                 Projectile tempProjectile;
                 BadCoin tempCoin;
-                vecOfBadCoins.push_back(tempCoin);
-                proj1.push_back(tempProjectile);
+                vecOfBadCoins.push_back(tempCoin); //add more badCoins at end of round
+                proj1.push_back(tempProjectile); //add more projectiles at end of round
 
-                for(int i = 0; i < vecOfBadCoins.size(); i++){
+                for(int i = 0; i < vecOfBadCoins.size(); i++){ //set position of each projectile to coincide with a bad coin
                     proj1[i].shape.setPosition(vecOfBadCoins[i].shape.getPosition());
                 }
             }
@@ -134,25 +134,19 @@ int main()
         // clear the window with black color
         window.clear(sf::Color::Black);
     
+        //draw necesarry objects
         character.draw(window);
-        
         for(Coin c : vecOfCoins){
             c.draw(window);
         }
-        
         for(BadCoin c : vecOfBadCoins){
             c.draw(window);
         }
-
         for(Projectile p : proj1){
             p.draw(window);
         }
-
         for(int p = 0; p < proj1.size(); p++){
-            proj1[p].shape.move(
-                                ((character.shape.getPosition().x - vecOfBadCoins[p].shape.getPosition().x) * .0001),
-                                ((character.shape.getPosition().y - vecOfBadCoins[p].shape.getPosition().y) *.0001)
-                                ); //* .0001 to slow down coin
+            proj1[p].shape.move(((character.shape.getPosition().x - vecOfBadCoins[p].shape.getPosition().x) * .0001), ((character.shape.getPosition().y - vecOfBadCoins[p].shape.getPosition().y) *.0001)); //finds direction to where character is and moves projectiles in that direction; * .0001 to slow down projectiles to reasonable speed
         }
 
         //draws the title for score
@@ -176,7 +170,7 @@ int main()
         
  
         //check if time has run out
-        if (elapsed1 > roundTime || lives > 3) {
+        if (elapsed1 > roundTime || hitCounter> 3) {
             window.draw(gameOver);
 //            sf::Text gameClock("0", font, 50);
 //            clock.restart();

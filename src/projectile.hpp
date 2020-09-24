@@ -14,21 +14,12 @@
 #include <cstdlib>
 
 class Projectile{
-    
 public:
-    
     sf::CircleShape shape;
-    sf::Vector2f currVelocity;
-    float maxSpeed;
-
-    Projectile(float radius = 4)
-    : currVelocity(0.f,0.f), maxSpeed(5.f)
-    {
-        shape = sf::CircleShape(radius);
+    Projectile(){
+        shape = sf::CircleShape(4);
         shape.setFillColor(sf::Color::White);
-
-  }
-
+    }
   void draw(sf::RenderWindow &window) { window.draw(shape); }
 };
 
