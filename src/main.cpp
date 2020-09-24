@@ -5,6 +5,8 @@
 #include "BadCoin.hpp"
 #include <iostream>
 #include <string>
+#include <SFML/audio.hpp>
+
 
 int main()
 {
@@ -12,14 +14,30 @@ int main()
     sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
     // Declare a new font
     sf::Font font;
-
     // Load it from a file
     if (!font.loadFromFile("../../ArialNarrow.ttf"))
     {
         std::cout<<"font didn't load"<<std::endl;
         return 1;
     }
+    //load sound files
+    sf::SoundBuffer bufferCollide;
+    if (!bufferCollide.loadFromFile("../../collision.wav")){
+        std::cout << "collision sound didn't load" <<std::endl;
+        return 1;
+    }
+    sf::Sound collision;
+    collision.setBuffer(bufferCollide);
+    
+    sf::SoundBuffer bufferCollect;
+    if (!bufferCollect.loadFromFile("../../collect.wav")){
+        std::cout << "collision sound didn't load" <<std::endl;
+        return 1;
+    }
+    sf::Sound collect;
+    collect.setBuffer(bufferCollect);
 
+    
     int hitCounter = 0;
     int score = 0;
     std::vector <Coin> vecOfCoins;
@@ -86,6 +104,7 @@ int main()
             sf::FloatRect tempBound = vecOfCoins[i].shape.getGlobalBounds();
             vecOfBounds.push_back(tempBound);
             if(testBoundingBox.intersects(vecOfBounds[i])){//detects collision, adds to score and removes that Coin
+                collect.play();
                 vecOfCoins.erase(vecOfCoins.begin()+i);
                 score++;
             }
@@ -106,12 +125,13 @@ int main()
             sf::FloatRect tempBound = proj1[i].shape.getGlobalBounds();
             proj1Bounds.push_back(tempBound);
             if(testBoundingBox.intersects(proj1Bounds[i])){
+                collision.play();
                 proj1.erase(proj1.begin()+i);
                 hitCounter ++;
             }
         }
         
-        
+        //Checks when all coins are collected and starts a new round. Loads additional BadCoins and projectiles to increase difficulty of subsequent rounds.
         if(vecOfCoins.size() == 0){ //once all coins are collected, reset timer, spawn next round's coins
             clock.restart();  //
             for(int i = 0; i < 1; i++){ //loop + vector to easily scale at a later point
