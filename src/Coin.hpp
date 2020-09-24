@@ -36,17 +36,7 @@ public:
 
   void draw(sf::RenderWindow &window) { window.draw(shape); }
 };
-    //time
-//    a. location in window
-//    b. point value
-//    c. movement
-//    d. countdown
-//    e. speed
-//    f. is live
-//    --shape class
-//    --event class
-//    --time class
-//    --color
+
 
 #endif /* Coin_hpp */
 

@@ -25,7 +25,7 @@ cmake_minimum_required(VERSION 3.15)
 project(CoinGame)
 
 #the project contains an executable named testSFML that uses the following cpp files
-add_executable(CoinGame src/main.cpp src/Character.cpp)
+add_executable(CoinGame src/main.cpp src/Character.cpp src/Coin.cpp src/BadCoin.cpp src/projectile.cpp)
 
 #create a folder named "cmake" at the top of your project and put the
 #findSFML.cmake file in it.  This line tells Cmake to look there for
