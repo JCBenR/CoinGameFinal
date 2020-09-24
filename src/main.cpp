@@ -10,52 +10,70 @@
 
 int main()
 {
-    // create the window
+    /// create the window
     sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
-    // Declare a new font
+    /// Declare a new font
     sf::Font font;
-    // Load it from a file
+    /// Load font from a file
     if (!font.loadFromFile("../../ArialNarrow.ttf"))
     {
+        ///if doesn't load correctly, print error and close
         std::cout<<"font didn't load"<<std::endl;
         return 1;
     }
     //load sound files
+    ///declare sound file
     sf::SoundBuffer bufferCollide;
+    ///load file. need to use directory outside source
     if (!bufferCollide.loadFromFile("../../collision.wav")){
+        ///if doesn't load correctly, print error and close
         std::cout << "collision sound didn't load" <<std::endl;
         return 1;
     }
     sf::Sound collision;
     collision.setBuffer(bufferCollide);
-    
+    ///declare sound file
     sf::SoundBuffer bufferCollect;
+    ///load file. need to use directory outside source
     if (!bufferCollect.loadFromFile("../../collect.wav")){
+        ///if doesn't load correctly, print error and close
         std::cout << "collision sound didn't load" <<std::endl;
         return 1;
     }
+    ///declare sound file
     sf::Sound collect;
     collect.setBuffer(bufferCollect);
     
     //LOAD BACKGROUND
+    ///declare texture for background
     sf::Texture texture;
+    ///load texture from file
     if (!texture.loadFromFile("../../digitalMtn.jpg"))
     {
+        ///error out if file not found
         std::cout << "backgroun image didn't load" <<std::endl;
         return 1;
     }
     
     sf::Sprite sprite;
+    ///assign background image to sprite
     sf::Vector2u size = texture.getSize();
             sprite.setTexture(texture);
+    ///set position to fill screen
             sprite.setOrigin(size.x / 3, size.y / 3);
-    
+    ///@param hitCounter number of times person has been hit
     int hitCounter = 0;
+    ///@param score total score of collected coins - badCoins
     int score = 0;
+    ///@param vecOfCoins vector of good coins
     std::vector <Coin> vecOfCoins;
+    ///@param vecOfBadCoins vector of bad coins
     std::vector <BadCoin> vecOfBadCoins;
+    ///@param proj1 projectiles
     std::vector <Projectile> proj1;
+    ///generate character on screen
     Ball character(25,sf::Vector2f(800,600));
+    ///populate vector of coins
     for(int i = 0; i < 1; i++){ //loop + vector to easily scale at a later point
         Coin tempCoin;
         vecOfCoins.push_back(tempCoin);
