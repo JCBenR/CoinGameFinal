@@ -15,14 +15,14 @@ int main()
     // Declare a new font
     sf::Font font;
     // Load it from a file
-    if (!font.loadFromFile("../../ArialNarrow.ttf"))
+    if (!font.loadFromFile("ArialNarrow.ttf"))
     {
         std::cout<<"font didn't load"<<std::endl;
         return 1;
     }
     //load sound files
     sf::SoundBuffer bufferCollide;
-    if (!bufferCollide.loadFromFile("../../collision.wav")){
+    if (!bufferCollide.loadFromFile("collision.wav")){
         std::cout << "collision sound didn't load" <<std::endl;
         return 1;
     }
@@ -30,7 +30,7 @@ int main()
     collision.setBuffer(bufferCollide);
     
     sf::SoundBuffer bufferCollect;
-    if (!bufferCollect.loadFromFile("../../collect.wav")){
+    if (!bufferCollect.loadFromFile("collect.wav")){
         std::cout << "collision sound didn't load" <<std::endl;
         return 1;
     }
@@ -39,7 +39,7 @@ int main()
     
     //LOAD BACKGROUND
     sf::Texture texture;
-    if (!texture.loadFromFile("../../digitalMtn.jpg"))
+    if (!texture.loadFromFile("digitalMtn.jpg"))
     {
         std::cout << "backgroun image didn't load" <<std::endl;
         return 1;
