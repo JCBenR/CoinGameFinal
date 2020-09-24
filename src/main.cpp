@@ -75,10 +75,8 @@ int main()
     //game over text
     sf::Text gameOver("GAME OVER", font, 60);
     gameOver.setPosition(300, 250);
-//    // set the shape color to green
-//    shape.setFillColor(sf::Color(100, 250, 50));
-//    shape.setOutlineThickness(10.f);
-//    shape.setOutlineColor(sf::Color(250, 150, 100));
+    sf::Text timer("TIME LEFT", font, 20);
+    
     
     
     //CLOCK
@@ -103,7 +101,8 @@ int main()
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
                 window.close();
-            
+
+            //if time runs out, character can't move anymore
             if (elapsed1 > roundTime) break;
             //KEYBOARD MOVEMENTS
             if(event.type == sf::Event::KeyPressed){
@@ -214,16 +213,20 @@ int main()
         //cast time to string (necessary so it can be printed on screen)
         std::string gameTime = std::to_string((int)(timeLeft.asSeconds()));
         
-        
         sf::Text gameClock(gameTime, font, 50);
-        gameClock.setPosition(450, 10);
-        window.draw(gameClock);
+        gameClock.setPosition(400, 10);
+        timer.setPosition(370, 1);
+        
         
         
         //check if time has run out
         if (elapsed1 > roundTime) {
             window.draw(gameOver);
-            clock.restart();
+//            sf::Text gameClock("0", font, 50);
+//            clock.restart();
+        } else{
+            window.draw(timer);
+            window.draw(gameClock);
         }
 	// end the current frame
         window.display();
