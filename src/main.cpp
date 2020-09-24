@@ -188,7 +188,7 @@ int main()
         window.draw(livesLeft);
         sf::Text displayLives(std::to_string(4 - hitCounter), font, 50);
         displayLives.setPosition(630, 25);
-        window.draw(livesLeft);
+        window.draw(displayLives);
         
         //CLOCK
         
