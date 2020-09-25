@@ -20,8 +20,8 @@ int main()
     sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
     /// Declare a new font
     sf::Font font;
-    /// Load font from a file
-    if (!font.loadFromFile("../../ArialNarrow.ttf"))
+    // Load it from a file
+    if (!font.loadFromFile("ArialNarrow.ttf"))
     {
         ///if doesn't load correctly, print error and close
         std::cout<<"font didn't load"<<std::endl;
@@ -30,9 +30,11 @@ int main()
     //load sound files
     ///declare sound file
     sf::SoundBuffer bufferCollide;
-    ///load file. need to use directory outside source
-    if (!bufferCollide.loadFromFile("../../collision.wav")){
+
+    if (!bufferCollide.loadFromFile("collision.wav")){
+
         ///if doesn't load correctly, print error and close
+
         std::cout << "collision sound didn't load" <<std::endl;
         return 1;
     }
@@ -40,8 +42,9 @@ int main()
     collision.setBuffer(bufferCollide);
     ///declare sound file
     sf::SoundBuffer bufferCollect;
+    
     ///load file. need to use directory outside source
-    if (!bufferCollect.loadFromFile("../../collect.wav")){
+    if (!bufferCollect.loadFromFile("collect.wav")){
         ///if doesn't load correctly, print error and close
         std::cout << "collision sound didn't load" <<std::endl;
         return 1;
@@ -53,8 +56,10 @@ int main()
     //LOAD BACKGROUND
     ///declare texture for background
     sf::Texture texture;
+
     ///load texture from file
-    if (!texture.loadFromFile("../../digitalMtn.jpg"))
+    if (!texture.loadFromFile("digitalMtn.jpg"))
+    ///load texture from file
     {
         ///error out if file not found
         std::cout << "backgroun image didn't load" <<std::endl;
